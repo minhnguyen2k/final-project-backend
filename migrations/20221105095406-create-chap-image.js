@@ -3,7 +3,7 @@ const { DataTypes } = require('sequelize');
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Genres', {
+    await queryInterface.createTable('Chap_Image', {
       id: {
         type: Sequelize.UUID,
         primaryKey: true,
@@ -11,11 +11,17 @@ module.exports = {
         allowNull: false,
         autoIncrement: false,
       },
-      name: {
-        type: Sequelize.STRING,
+      chapId: {
+        type: Sequelize.UUID,
+        references: {
+          model: {
+            tableName: 'Chaps',
+          },
+          key: 'id',
+        },
       },
-      description: {
-        type: Sequelize.TEXT,
+      image: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -28,6 +34,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Genres');
+    await queryInterface.dropTable('Chap_Image');
   },
 };

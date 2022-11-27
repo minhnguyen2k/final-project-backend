@@ -10,21 +10,30 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Book.belongsToMany(models.Author, {
-        through: 'Book_Author',
+        through: models.BookAuthor,
         foreignKey: 'bookId',
       });
       Book.belongsToMany(models.Genre, {
-        through: 'Book_Genre',
+        through: models.BookGenre,
+        foreignKey: 'bookId',
+      });
+      Book.hasMany(models.Chap, {
         foreignKey: 'bookId',
       });
     }
   }
   Book.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
       image: DataTypes.STRING,
       viewCount: DataTypes.INTEGER,
+      voteCount: DataTypes.INTEGER,
     },
     {
       sequelize,

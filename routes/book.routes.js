@@ -1,0 +1,11 @@
+const express = require('express');
+const bookController = require('../controllers/book.controller');
+const bookRouter = express.Router();
+bookRouter.get('/new-release', bookController.getNewReleaseBooks);
+bookRouter.get('/popular', bookController.getPopularBooks);
+bookRouter.get('/top-book', bookController.getTopBooks);
+bookRouter.get('/action-book', bookController.getActionGenreBooks);
+bookRouter.get('/genre', bookController.getBooksByGenre);
+bookRouter.get('/:id', bookController.getBookById);
+bookRouter.get('/', bookController.getAllBooksPagination);
+module.exports = bookRouter;

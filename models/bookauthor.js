@@ -11,13 +11,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   BookAuthor.init(
     {
-      authorId: DataTypes.INTEGER,
-      bookId: DataTypes.INTEGER,
+      authorId: DataTypes.UUID,
+      bookId: DataTypes.UUID,
     },
     {
       sequelize,
       modelName: 'BookAuthor',
       tableName: 'Book_Author',
+      timestamps: false,
     }
   );
   return BookAuthor;

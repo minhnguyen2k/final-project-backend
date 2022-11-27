@@ -10,13 +10,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Genre.belongsToMany(models.Book, {
-        through: 'Book_Genre',
-        foreignKey: 'genre_id',
+        through: models.BookGenre,
+        foreignKey: 'genreId',
       });
     }
   }
   Genre.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        primaryKey: true,
+      },
       name: DataTypes.STRING,
       description: DataTypes.TEXT,
     },

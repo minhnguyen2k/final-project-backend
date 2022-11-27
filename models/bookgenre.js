@@ -13,13 +13,14 @@ module.exports = (sequelize, DataTypes) => {
   }
   BookGenre.init(
     {
-      genreId: DataTypes.INTEGER,
-      bookId: DataTypes.INTEGER,
+      genreId: DataTypes.UUID,
+      bookId: DataTypes.UUID,
     },
     {
       sequelize,
       modelName: 'BookGenre',
       tableName: 'Book_Genre',
+      timestamps: false,
     }
   );
   return BookGenre;

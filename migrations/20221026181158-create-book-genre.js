@@ -5,7 +5,7 @@ module.exports = {
     await queryInterface.createTable('Book_Genre', {
       genreId: {
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: {
             tableName: 'Genres',
@@ -16,7 +16,7 @@ module.exports = {
       },
       bookId: {
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         references: {
           model: {
             tableName: 'Books',
