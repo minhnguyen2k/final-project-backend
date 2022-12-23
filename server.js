@@ -5,7 +5,6 @@ const helmet = require('helmet');
 const cors = require('cors');
 const uploadImage = require('./utils/initdata');
 const { checkCurrentUser } = require('./middleware/authMiddleware');
-const setHeader = require('./middleware/setHeader');
 require('dotenv').config();
 
 const port = process.env.PORT || 3333;
@@ -16,7 +15,6 @@ app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 
-app.use('*', setHeader);
 app.use('*', checkCurrentUser);
 
 app.use('/api', require('./routes/router'));
