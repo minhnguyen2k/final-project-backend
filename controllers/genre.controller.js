@@ -7,25 +7,28 @@ const genreController = {
     const result = await getAllGenres();
     res.status(200).json({
       data: result,
-      message: 'get all books success',
+      message: 'get all genres success',
     });
   },
   getGenreById: async (req, res) => {
     let page;
     let id;
-    if (req.query && req.query.p) {
-      page = Number(req.query.p);
+    if (req.query && req.query.page) {
+      page = Number(req.query.page);
     }
     if (req.params && req.params.id) {
       id = req.params.id;
     }
+    console.log(page);
     const { totalPage, result } = await pagination(
       db.Genre,
-      { where: { id }, include: [{ model: db.Book }] },
-      page
+      { where: { id }, include: [{ model: db.Book }], subQuery: false },
+      page,
+      20
     );
     res.status(200).json({
       data: result.rows,
+      totalPage,
       message: 'get books by genre success',
     });
   },

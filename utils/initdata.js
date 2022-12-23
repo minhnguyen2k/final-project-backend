@@ -296,7 +296,13 @@ const uploadImage = async () => {
               .replace(/đ/g, 'd')
               .replace(/Đ/g, 'D')
               .replace(/ - /g, '-')
-              .replace(/ /g, '-')}/${comicChaps[j].replace(/ /g, '-')}`,
+              .replace(/ /g, '-')}/${comicChaps[j]
+              .normalize('NFD')
+              .replace(/[\u0300-\u036f]/g, '')
+              .replace(/đ/g, 'd')
+              .replace(/Đ/g, 'D')
+              .replace(/ - /g, '-')
+              .replace(/ /g, '-')}`,
           }
         );
       });
@@ -334,5 +340,9 @@ const insertChap20 = async () => {
     console.log(err);
   }
 };
+const initRole = async () => {
+  await db.Role.create({ name: 'admin' });
+  await db.Role.create({ name: 'member' });
+};
 
-module.exports = insertChap20;
+module.exports = uploadImage;

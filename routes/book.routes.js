@@ -1,11 +1,20 @@
 const express = require('express');
 const bookController = require('../controllers/book.controller');
+const { requireAuth } = require('../middleware/authMiddleware');
 const bookRouter = express.Router();
 bookRouter.get('/new-release', bookController.getNewReleaseBooks);
+bookRouter.get('/new-release-chapter', bookController.getNewReleaseBooksChapter);
 bookRouter.get('/popular', bookController.getPopularBooks);
 bookRouter.get('/top-book', bookController.getTopBooks);
 bookRouter.get('/action-book', bookController.getActionGenreBooks);
 bookRouter.get('/genre', bookController.getBooksByGenre);
+bookRouter.get('/all-book', bookController.getAllBooks);
+bookRouter.get('/search', bookController.searchBook);
+bookRouter.post('/filter-books', bookController.filterBook);
 bookRouter.get('/:id', bookController.getBookById);
 bookRouter.get('/', bookController.getAllBooksPagination);
+bookRouter.post('/', bookController.createBook);
+bookRouter.put('/edit/:id', bookController.updateBook);
+bookRouter.delete('/:id', requireAuth, bookController.deleteBook);
+
 module.exports = bookRouter;

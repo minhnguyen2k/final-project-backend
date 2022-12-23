@@ -1,5 +1,6 @@
 'use strict';
 const { Model } = require('sequelize');
+const hashPassword = require('../utils/hashPassword');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,6 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.belongsTo(models.Role, {
+        foreignKey: 'roleId',
+        onDelete: 'RESTRICT',
+        onUpdate: 'RESTRICT',
+      });
+      User.hasMany(models.Comment, {
+        foreignKey: 'userId',
+      });
     }
   }
   User.init(
@@ -18,12 +27,24 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
-      email: DataTypes.STRING,
+      email: {
+        type: DataTypes.STRING,
+        validate: {
+          isEmail: true,
+        },
+      },
       username: DataTypes.STRING,
       password: DataTypes.STRING,
       roleId: DataTypes.STRING,
     },
+
     {
+      hooks: {
+        beforeCreate: async (user, options) => {
+          const hashedPassword = await hashPassword(user.password);
+          user.password = hashedPassword;
+        },
+      },
       sequelize,
       modelName: 'User',
     }

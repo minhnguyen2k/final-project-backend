@@ -23,6 +23,7 @@ module.exports = {
           },
           key: 'id',
         },
+        onDelete: 'cascade',
         allowNull: false,
       },
     });

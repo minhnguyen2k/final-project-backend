@@ -9,6 +9,7 @@ module.exports = {
         primaryKey: true,
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
+        onDelete: 'CASCADE',
         autoIncrement: false,
       },
       name: {

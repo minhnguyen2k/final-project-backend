@@ -1,16 +1,21 @@
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const cors = require('cors');
 const uploadImage = require('./utils/initdata');
+const { checkCurrentUser } = require('./middleware/authMiddleware');
 require('dotenv').config();
 
 const port = process.env.PORT || 3333;
 const app = express();
+app.use(bodyParser.json());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
+
+app.use('*', checkCurrentUser);
 
 app.use('/api', require('./routes/router'));
 

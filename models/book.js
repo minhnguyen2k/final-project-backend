@@ -12,12 +12,17 @@ module.exports = (sequelize, DataTypes) => {
       Book.belongsToMany(models.Author, {
         through: models.BookAuthor,
         foreignKey: 'bookId',
+        onDelete: 'cascade',
       });
       Book.belongsToMany(models.Genre, {
         through: models.BookGenre,
         foreignKey: 'bookId',
+        onDelete: 'cascade',
       });
       Book.hasMany(models.Chap, {
+        foreignKey: 'bookId',
+      });
+      Book.hasMany(models.Comment, {
         foreignKey: 'bookId',
       });
     }
