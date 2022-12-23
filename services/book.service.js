@@ -4,7 +4,7 @@ const db = require('../models');
 
 const getBooksPagination = async (page = 1, query, limit = 10) => {
   const offset = (page - 1) * limit;
-  const countBook = await db.sequelize.query('SELECT count(id) as totalBook from books', {
+  const countBook = await db.sequelize.query('SELECT count(id) as totalBook from Books', {
     type: QueryTypes.SELECT,
   });
   const totalPage = Math.ceil(countBook[0].totalBook / limit);
@@ -50,7 +50,7 @@ const getBookById = async (id) => {
         [Op.or]: relevantBookIds,
       },
     },
-    group: ['chap.bookId'],
+    group: ['Chap.bookId'],
   });
   return { book, relevantBooks, totalRelevantBooksChap };
 };
@@ -148,30 +148,30 @@ const filterBook = async (data, page = 1) => {
   const offset = (page - 1) * 30;
   let option = '';
   if (data.genreId) {
-    option += ` where book_genre.genreId = '${data.genreId}'`;
+    option += ` where Book_Genre.genreId = '${data.genreId}'`;
   }
   if (typeof data.chapCount === 'number') {
     if (data.chapCount === 0) {
-      option += ` group by books.id having chapTotal > 0`;
+      option += ` group by Books.id having chapTotal > 0`;
     } else {
-      option += ` group by books.id having chapTotal>=${data.chapCount}`;
+      option += ` group by Books.id having chapTotal>=${data.chapCount}`;
     }
   }
   if (data.sortBy) {
     if (data.sortBy === 'newChapter') {
-      option += ` order by chaps.createdAt desc`;
+      option += ` order by Chaps.createdAt desc`;
     } else if (data.sortBy === 'newBook') {
-      option += ` order by books.createdAt desc`;
+      option += ` order by Books.createdAt desc`;
     } else if (data.sortBy === 'mostViewed') {
-      option += ' order by books.viewCount desc';
+      option += ' order by Books.viewCount desc';
     } else option += ' order by chapTotal desc';
   }
   console.log(option);
   const result = await db.sequelize.query(
-    `SELECT books.*,count(chaps.id) as chapTotal FROM books ${
-      data.genreId ? 'join book_genre on books.id=book_genre.bookId' : ''
-    } join chaps on chaps.bookId = books.id ${
-      option === '' ? 'group by books.id' : option
+    `SELECT Books.*,count(Chaps.id) as chapTotal FROM Books ${
+      data.genreId ? 'join Book_Genre on Books.id=Book_Genre.bookId' : ''
+    } join Chaps on Chaps.bookId = Books.id ${
+      option === '' ? 'group by Books.id' : option
     } limit 30 offset ${offset}`,
     {
       type: QueryTypes.SELECT,

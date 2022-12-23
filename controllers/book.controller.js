@@ -66,7 +66,7 @@ const bookController = {
         include: [{ model: db.Book }],
         distinct: true,
         group: ['bookId'],
-        order: [[Sequelize.fn('max', Sequelize.col('chap.createdAt')), 'DESC']],
+        order: [[Sequelize.fn('max', Sequelize.col('Chap.createdAt')), 'DESC']],
       },
       page
     );
@@ -123,7 +123,7 @@ const bookController = {
     }
     const { totalPage, result } = await getBooksPagination(
       page,
-      'SELECT books.*, count(chaps.id) as chapTotal FROM books join chaps on chaps.bookId = books.id group by books.id order by books.voteCount desc'
+      'SELECT Books.*, count(Chaps.id) as chapTotal FROM Books join Chaps on Chaps.bookId = Books.id group by Books.id order by Books.voteCount desc'
     );
     const books = await pagination(
       db.Book,
