@@ -19,7 +19,6 @@ const genreController = {
     if (req.params && req.params.id) {
       id = req.params.id;
     }
-    console.log(page);
     const { totalPage, result } = await pagination(
       db.Genre,
       { where: { id }, include: [{ model: db.Book }], subQuery: false },

@@ -104,14 +104,35 @@ const bookController = {
     }
     const { totalPage, result } = await pagination(
       db.Book,
-      { include: [{ model: db.Author, model: db.Chap }], order: [['viewCount', 'DESC']] },
+      { include: [{ model: db.Author }, { model: db.Chap }], order: [['viewCount', 'DESC']] },
       page
     );
-
     res.status(200).json({
       data: result.rows,
       totalPage,
       message: 'get popular books success',
+      length: result.rows.length,
+    });
+  },
+
+  getAllBooksByAuthor: async (req, res) => {
+    let page;
+    if (req.query && req.query.p) {
+      page = Number(req.query.p);
+    }
+    const { totalPage, result } = await pagination(
+      db.Book,
+      {
+        include: [{ model: db.Author, where: { id: req.params.authorId } }],
+      },
+      page,
+      20
+    );
+    res.status(200).json({
+      data: result.rows,
+      success: true,
+      totalPage,
+      message: 'get all books by author success',
       length: result.rows.length,
     });
   },
@@ -204,6 +225,7 @@ const bookController = {
   updateBook: async (req, res) => {
     try {
       const result = await updateBook(req.params.id, req.body);
+      console.log('hihi');
       res.status(200).json({ message: 'update success', success: true, data: result });
     } catch (error) {
       res.status(402).json({ message: 'update fail', error });

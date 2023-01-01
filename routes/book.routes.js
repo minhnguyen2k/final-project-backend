@@ -4,6 +4,7 @@ const { requireAuth } = require('../middleware/authMiddleware');
 const bookRouter = express.Router();
 bookRouter.get('/new-release', bookController.getNewReleaseBooks);
 bookRouter.get('/new-release-chapter', bookController.getNewReleaseBooksChapter);
+bookRouter.get('/all-book-author/:authorId', bookController.getAllBooksByAuthor);
 bookRouter.get('/popular', bookController.getPopularBooks);
 bookRouter.get('/top-book', bookController.getTopBooks);
 bookRouter.get('/action-book', bookController.getActionGenreBooks);
